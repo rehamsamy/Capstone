@@ -1,5 +1,6 @@
 package com.example.mohamed.capstone;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,10 +22,11 @@ public class UsersActivity extends AppCompatActivity implements UserAdapter.OnCl
     private static final String TAG ="UsersActivity" ;
     UserAdapter adapter;
     RecyclerView recyclerView;
-    ArrayList<User> users;
+   public ArrayList<User> users;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,41 +42,8 @@ public class UsersActivity extends AppCompatActivity implements UserAdapter.OnCl
         firebaseAuth=FirebaseAuth.getInstance();
         final FirebaseUser user=firebaseAuth.getCurrentUser();
         databaseReference=firebaseDatabase.getReference().child("users");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.v(TAG,"dataCount"+dataSnapshot.getValue().toString());
 
-                if(dataSnapshot .exists()){
-                   for(DataSnapshot xData:dataSnapshot.getChildren()){
-                        Log.v(TAG,"dataSnap"+xData.getValue().toString());
-                        Log.v(TAG,"dataCount"+dataSnapshot.getChildrenCount());
-                        String name=xData.child("name").getValue().toString();
-                       Log.v(TAG,"stringValue"+name);
-                        String image=xData.child("image").getValue().toString();
-                        String status=xData.child("status").getValue().toString();
-
-                        User user=new User(name,image,status);
-                        users.add(user);
-                       //Log.v(TAG,"userValue"+users.get(1));
-                       Log.v(TAG,"userValue"+users.size());
-
-                    }
-                    adapter=new UserAdapter(UsersActivity.this,users,UsersActivity.this);
-                    recyclerView.setAdapter(adapter);
-                    Log.v(TAG,"userValue"+users.size());
-
-
-                    Log.v(TAG,"userValue"+users.size());
-                }
-
-                }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        new Task().execute();
 
     }
 
@@ -82,6 +51,74 @@ public class UsersActivity extends AppCompatActivity implements UserAdapter.OnCl
 
     @Override
     public void getPosition(int position) {
+
+    }
+
+
+
+
+    class Task extends AsyncTask<Void,Void,ArrayList<User>>{
+
+        @Override
+        protected ArrayList<User> doInBackground(Void... voids) {
+
+           ArrayList<User> userArrayList= getData();
+           Log.v(TAG,"sssssssssss"+userArrayList.size());
+            return userArrayList;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<User> users) {
+            super.onPostExecute(users);
+
+            adapter=new UserAdapter(UsersActivity.this,users,UsersActivity.this);
+                    recyclerView.setAdapter(adapter);
+                    Log.v(TAG,"postValue"+users.size());
+
+        }
+    }
+
+
+   ArrayList<User> getData(){
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.v(TAG,"dataCount"+dataSnapshot.getValue().toString());
+
+                if(dataSnapshot .exists()){
+                    for(DataSnapshot xData:dataSnapshot.getChildren()){
+                        Log.v(TAG,"dataSnap"+xData.getValue().toString());
+                        Log.v(TAG,"dataCount"+dataSnapshot.getChildrenCount());
+                        String name=xData.child("name").getValue().toString();
+                        Log.v(TAG,"stringValue"+name);
+                        String image=xData.child("image").getValue().toString();
+                        String status=xData.child("status").getValue().toString();
+
+                        User user=new User(name,image,status);
+                       UsersActivity.this.users.add(user);
+                        //Log.v(TAG,"userValue"+users.get(1));
+                        Log.v(TAG,"userValue"+users.size());
+
+                    }
+//                    adapter=new UserAdapter(UsersActivity.this,users,UsersActivity.this);
+//                    recyclerView.setAdapter(adapter);
+//                    Log.v(TAG,"userValue"+users.size());
+
+
+                    Log.v(TAG,"userValue"+users.size());
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+       Log.v(TAG,"uuuuuuuuuu"+users.size());
+       return UsersActivity.this.users;
 
     }
 }
