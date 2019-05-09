@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Capstone</string>
+    <string name="welcome_message">Welcome To R2M Chat</string>
+    <string name="createAccount">createAccount</string>
+    <string name="createAccountButton">createAccount</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="setting">Edit Settings</string>
+    <string name="users">All Users</string>
+    <string name="logout">Log Out</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_status">Hello ! I am Here</string>
+    <string name="Change_Image">Change Image</string>
+    <string name="Change_States">Change States</string>
+    <string name="status_input">Your Status:</string>
 </resources>
