@@ -71,10 +71,11 @@ public class UsersActivity extends AppCompatActivity implements UserAdapter.OnCl
         protected void onPostExecute(ArrayList<User> users) {
             super.onPostExecute(users);
 
-            adapter=new UserAdapter(UsersActivity.this,users,UsersActivity.this);
-                    recyclerView.setAdapter(adapter);
-                    Log.v(TAG,"postValue"+users.size());
+//            adapter=new UserAdapter(UsersActivity.this,users,UsersActivity.this);
+//                    recyclerView.setAdapter(adapter);
+//                    Log.v(TAG,"postValue"+users.size());
 
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -101,9 +102,9 @@ public class UsersActivity extends AppCompatActivity implements UserAdapter.OnCl
                         Log.v(TAG,"userValue"+users.size());
 
                     }
-//                    adapter=new UserAdapter(UsersActivity.this,users,UsersActivity.this);
-//                    recyclerView.setAdapter(adapter);
-//                    Log.v(TAG,"userValue"+users.size());
+                    adapter=new UserAdapter(UsersActivity.this,users,UsersActivity.this);
+                    recyclerView.setAdapter(adapter);
+                    Log.v(TAG,"userValue"+users.size());
 
 
                     Log.v(TAG,"userValue"+users.size());
