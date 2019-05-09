@@ -33,6 +33,7 @@ public class UsersActivity extends AppCompatActivity implements UserAdapter.OnCl
         users=new ArrayList<>();
         recyclerView=(RecyclerView) findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
        // adapter=new UserAdapter(this,users,this);
 
         firebaseDatabase=FirebaseDatabase.getInstance();
@@ -52,7 +53,7 @@ public class UsersActivity extends AppCompatActivity implements UserAdapter.OnCl
                        Log.v(TAG,"stringValue"+name);
                         String image=xData.child("image").getValue().toString();
                         String status=xData.child("status").getValue().toString();
-                        users=new ArrayList<>();
+
                         User user=new User(name,image,status);
                         users.add(user);
                        //Log.v(TAG,"userValue"+users.get(1));
